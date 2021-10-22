@@ -31,26 +31,27 @@ def get_summoner_rank_info(name):
     return {'summonerName': summ_name, 'tier':rank_tier, 'division':rank_division, 'lp':lp, 'wins':wins, 'losses':losses }
 
 def get_summoner_rank(name):
-    try:
-        summoner = watcher.summoner.by_name(region,name)
-    except ApiError:
-        return "No summoner found"
+    # try:
+    #     summoner = watcher.summoner.by_name(region,name)
+    # except ApiError:
+    #     return "No summoner found"
 
-    ranked_stats = watcher.league.by_summoner(region,summoner['id'])
+    # ranked_stats = watcher.league.by_summoner(region,summoner['id'])
 
-    solo_tiers = ['MASTER', 'GRANDMASTER', 'CHALLENGER']
+    # solo_tiers = ['MASTER', 'GRANDMASTER', 'CHALLENGER']
 
-    dict_num = 0 if ranked_stats[0].get('queueType') == 'RANKED_SOLO_5x5' else 1
+    # dict_num = 0 if ranked_stats[0].get('queueType') == 'RANKED_SOLO_5x5' else 1
 
-    summ_name = ranked_stats[dict_num].get('summonerName')
-    rank = ranked_stats[dict_num].get('tier').title() +  ' ' + ranked_stats[dict_num].get('rank')
-    lp = ranked_stats[dict_num].get('leaguePoints')
-    wins = ranked_stats[dict_num].get('wins')
-    losses = ranked_stats[dict_num].get('losses')
+    # summ_name = ranked_stats[dict_num].get('summonerName')
+    # rank = ranked_stats[dict_num].get('tier').title() +  ' ' + ranked_stats[dict_num].get('rank')
+    # lp = ranked_stats[dict_num].get('leaguePoints')
+    # wins = ranked_stats[dict_num].get('wins')
+    # losses = ranked_stats[dict_num].get('losses')
+    summoner = get_summoner_rank_info(name)
 
     stats_string = """{name}\nRank: {rank} {lp} LP\nW: {wins} L: {losses}
     """
-    return stats_string.format(name=summ_name, rank=rank, lp=lp, wins=wins, losses=losses)
+    return stats_string.format(name=summoner.summ_name, rank=summoner.rank, lp=summoner.lp, wins=summoner.wins, losses=summoner.losses)
 
 def get_difference_in_ranks(name1, name2):
     summoner1 = get_summoner_rank_info(name1)
